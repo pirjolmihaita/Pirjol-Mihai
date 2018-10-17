@@ -1,0 +1,197 @@
+import java.awt.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.Timer;
+
+public class hockey extends JPanel implements KeyListener, ActionListener {
+    boolean play = true;
+    private int  ballx = 310;
+	private static int bally = 370;
+	private int ballxSpeed = 3;
+	private int ballySpeed = 3;
+	private int score1;
+	private int score2 = 0;
+    private int padposX2 = 470,padposY2 = 40,padposX1 = 100,padposY1 = 500;
+    Timer timer;
+    boolean gameStarted = false;
+    boolean again = false;
+    
+    	
+    
+
+    public hockey() {
+        setSize(new Dimension(1200, 1200));
+        addKeyListener(this);
+        setFocusable(true);
+        setFocusTraversalKeysEnabled(true);
+        timer = new Timer(100, this);
+        timer.start();
+        
+        
+    }
+    public void paint(Graphics g) {
+        // Gameboard size
+    	
+        g.setColor(Color.black);
+        g.fillRect(1, 1, 700, 700);
+        // Border of the game
+        g.setColor(Color.yellow);
+        g.fillRect(1,1, 700, 10);
+        g.fillRect(0, 0, 692, 3);
+        g.fillRect(692, 0, 3, 592);
+        // Paddle
+        g.setColor(Color.green);
+        g.fillRect(padposX1, padposY1, 100, 8);
+        // Second Paddle
+        g.setColor(Color.red);
+        g.fillRect(padposX2, padposY2, 100, 8);
+        // Ball
+        g.setColor(Color.yellow);
+        
+        g.drawString(String.valueOf("PLAYER 1: "+score1), 70 / 1 - 15, 100); 
+        g.drawString(String.valueOf("PLAYER 2: "+score2), 70 / 1 - 15, 120); 
+       
+        
+        g.fillOval(ballx, bally, 20, 20);
+       
+  
+        if(bally < 0 || bally >600 ) {
+        	g.setColor(Color.white);
+            g.setFont(new Font("Arial", 20, 50));
+            
+            ballySpeed = 0;
+            ballxSpeed = 0;
+         
+            g.drawString(String.valueOf("GAME OVER"), 200 / 1 - 15, 200);
+            if(again == true)
+            {
+            ballx = 340;
+            bally = 240;
+            g.fillOval(ballx, bally, 20, 20);
+            ballySpeed = 10;
+            ballxSpeed = 10;
+            ballx = ballx + ballxSpeed;
+            bally = bally + ballySpeed;
+            again = false;
+              
+            }
+            
+      
+        }
+        
+             
+         if(gameStarted == true) {
+            	ballx = ballx + ballxSpeed;
+                bally = bally + ballySpeed;
+            }
+         //Window down
+        	if(ballx >= padposX1 && ballx <= padposX1 + 100 && bally >= 470)
+            ballySpeed = -30; 
+        	
+        	
+         //Window up
+        	 if (ballx >= padposX2 && ballx <= padposX2 +100 && bally <= 65) 
+                 ballySpeed = 30; 
+             
+          
+        //Window right
+        if (ballx >= 680) 
+            ballxSpeed = -20;
+
+        
+        //Window left
+        if (ballx <= 20) 
+        	
+            ballxSpeed = 20;
+        if(bally < 5) {
+          	 score2 ++;
+          	 bally= 601;
+          	 again = false;
+        }
+        if(bally > 601) {
+         	 score1 ++;
+         	 bally= -1;
+         	 score2--;
+         	 again = false;
+       }
+        
+        if(padposX1 < 20) padposX1 = 20;
+        if(padposX1 > 580) padposX1 = 580;
+        if(padposX2 < 20) padposX2 = 20;
+        if(padposX2 > 580) padposX2 = 580;
+       
+       
+       
+        	
+    }
+        
+	public void actionPerformed(ActionEvent e) {
+        timer.start();
+        if (true) {
+            repaint();
+        }
+    }
+
+    public void keyPressed(KeyEvent e) {
+  
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+           
+                moveRight();
+          
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+           
+                moveLeft();
+        }
+            
+            if (e.getKeyCode() == KeyEvent.VK_S) {
+                    moveRight1();      
+            }
+            if (e.getKeyCode() == KeyEvent.VK_A) {
+                moveLeft1();       
+        }
+            if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                gameStarted = true;      
+        }
+            if (e.getKeyCode() == KeyEvent.VK_K) {
+                again = true;      
+        }
+       }
+    
+
+    public void keyReleased(KeyEvent e) {
+    }
+
+    public void keyTyped(KeyEvent e) {
+    }
+   
+    public void moveRight() {
+        padposX1 += 20;     
+    }
+    
+    public void moveLeft() {    
+    	padposX1 -= 20;
+    }
+    public void moveRight1(){
+        padposX2 += 20;
+    }
+    public void moveLeft1(){
+        padposX2 -= 20;
+    }
+    
+    public static void main(String[] args) throws InterruptedException {
+        JFrame obj = new JFrame();
+        hockey g = new hockey();
+        
+        obj.setBounds(10, 10, 700, 600);
+        obj.setTitle("Air Hockey");
+        obj.setResizable(true);
+        obj.setVisible(true);
+        obj.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        obj.getContentPane().add(g);
+    }	
+}
