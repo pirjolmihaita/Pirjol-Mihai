@@ -1,0 +1,141 @@
+import javax.swing.*;
+
+import java.io.*;
+import java.awt.List;
+import java.awt.event.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Scanner;
+import java.util.HashMap;
+
+
+class LoginFrame implements ActionListener
+{
+    JFrame f;
+    JTextField tUser;
+    JTextField tPassword;
+    JButton bLogare;
+    JLabel userUsername = new JLabel("USERNAME");
+    JLabel userParola = new JLabel("PAROLA");
+    JCheckBox showPassword = new JCheckBox("Show Password");
+    
+	private static String username;
+	private static String password;
+	private static String userText;
+	private static String parolaText;
+  
+
+    LoginFrame() {
+        f = new JFrame("Fail Project");
+        bLogare = new JButton("Logare");
+        tUser = new JTextField();
+        tPassword = new JPasswordField();
+        
+
+        //set bounds of buttons
+        tUser.setBounds(140,40,200,30);
+        tPassword.setBounds(140,70,200,30);
+        bLogare.setBounds(60,380,100,40);
+        userUsername.setBounds(50,40,100,30);
+        userParola.setBounds(50,70,100,30);
+        showPassword.setBounds(150,100,150,30);
+
+        //add buttons on frame
+        f.add(tUser);
+        f.add(tPassword);
+        f.add(userUsername);
+        f.add(userParola);
+        f.add(bLogare);
+        f.setLayout(null);
+        f.add(showPassword);
+          
+        f.setVisible(true);
+        f.setSize(350,500);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        f.setResizable(true);
+        // adaugare actiuni pe butoane
+        bLogare.addActionListener(this);
+        showPassword.addActionListener(this);
+        
+        
+    }
+    public void actionPerformed(ActionEvent e) {
+    	
+       
+        userText = tUser.getText();
+        parolaText = tPassword.getText();
+           
+        if (e.getSource() == bLogare) {
+        	if (userText.equals(getusername()) && parolaText.equals(getpassword())) {
+                JOptionPane.showMessageDialog(f, "Login Successful");
+                        //second secundar = new second();  //nu o baga in seama
+                        f.setVisible(true);
+            } 
+        	else JOptionPane.showMessageDialog(f, "Invalid Username or Password");              
+     }
+
+        if (e.getSource() == showPassword) {
+            if (showPassword.isSelected()) {
+                ((JPasswordField) tPassword).setEchoChar((char) 0);
+            } else {
+                ((JPasswordField) tPassword).setEchoChar('*');
+            }
+        }
+    }
+
+	public static void main(String args[]) throws IOException {
+         
+    	  ArrayList<LoginFrame>userList = new ArrayList<LoginFrame>();  
+    	  BufferedReader in = new BufferedReader(new FileReader("angajat.txt"));
+    	  String linieCurenta;
+    	  while(((linieCurenta = in.readLine())!=null)){
+    	        String[] information = linieCurenta.split(" ");
+    	        String username = information[0];
+    	        String password = information[1];
+    	        System.out.println("username este :" + username);
+    	        System.out.println("parola   este :" + password);    
+    	  LoginFrame obiect = new LoginFrame();
+    	  obiect.setuserText(userText);
+    	  obiect.getuserText();
+    	  
+    	  obiect.setusername(username);
+    	  obiect.getusername();
+    	  
+    	  obiect.setparolaText(parolaText);
+    	  obiect.getparolaText();
+    	  
+    	  obiect.setpassword(password);
+    	  obiect.getpassword();
+    	  
+    	  
+    	  new LoginFrame();
+    	  }  
+     }
+	 public void setusername(String username){
+		 this.username = username;
+	 }
+	 public String getusername(){
+		return username;	
+	 }
+	 public void setpassword(String password){
+		 this.password = password;
+	 }
+	 public String getpassword(){
+		 return password;
+	 }
+	 
+	 public void setuserText(String userText){
+		 this.userText = userText;
+	 }
+	 public String  getuserText(){
+		return userText;	
+	 }
+	 public void setparolaText(String parolaText){
+		 this.parolaText = parolaText;
+	 }
+	 public String  getparolaText(){
+		return parolaText;	
+	 }
+	 
